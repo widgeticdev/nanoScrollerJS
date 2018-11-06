@@ -731,7 +731,7 @@
       this.paneOuterHeight = paneOuterHeight;
       this.sliderHeight = sliderHeight;
       this.paneTop = paneTop;
-      this.slider.height(sliderHeight);
+      this.slider.height(sliderHeight - 2 * this.options.sliderPadding);
       this.events.scroll();
       this.pane.removeClass('disabled').addClass('enabled');
       this.isActive = true;

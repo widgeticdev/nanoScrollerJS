@@ -409,12 +409,12 @@
       @prevScrollTop = @contentScrollTop or 0
       @contentScrollTop = content.scrollTop
 
-      direction = if @contentScrollTop > @previousPosition 
+      direction = if @contentScrollTop > @previousPosition
                     "down"
-                  else 
-                    if @contentScrollTop < @previousPosition 
-                      "up" 
-                    else 
+                  else
+                    if @contentScrollTop < @previousPosition
+                      "up"
+                    else
                       "same"
       @previousPosition = @contentScrollTop
 
@@ -669,7 +669,7 @@
       @paneTop = paneTop
 
       # set the values to the gadget
-      @slider.height sliderHeight
+      @slider.height (sliderHeight - 2 * @options.sliderPadding)
 
       # scroll sets the position of the @slider
       do @events.scroll

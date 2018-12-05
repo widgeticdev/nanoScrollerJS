@@ -3,16 +3,45 @@
 * Copyright (c) 2018 James Florentino; Licensed MIT */
 (function($, window, document) {
   "use strict";
-  var BROWSER_IS_IE7, BROWSER_SCROLLBAR_WIDTH, DOMSCROLL, DOWN, DRAG, ENTER, KEYDOWN, KEYUP, MOUSEDOWN, MOUSEENTER, MOUSEMOVE, MOUSEUP, MOUSEWHEEL, NanoScroll, PANEDOWN, RESIZE, SCROLL, SCROLLBAR, TOUCHMOVE, UP, WHEEL, cAF, defaults, getBrowserScrollbarWidth, hasTransform, isFFWithBuggyScrollbar, rAF, transform, _elementStyle, _prefixStyle, _vendor;
+  var BROWSER_IS_IE7,
+    BROWSER_SCROLLBAR_WIDTH,
+    DOMSCROLL,
+    DOWN,
+    DRAG,
+    ENTER,
+    KEYDOWN,
+    KEYUP,
+    MOUSEDOWN,
+    MOUSEENTER,
+    MOUSEMOVE,
+    MOUSEUP,
+    MOUSEWHEEL,
+    NanoScroll,
+    PANEDOWN,
+    RESIZE,
+    SCROLL,
+    SCROLLBAR,
+    TOUCHMOVE,
+    UP,
+    WHEEL,
+    cAF,
+    defaults,
+    getBrowserScrollbarWidth,
+    hasTransform,
+    isFFWithBuggyScrollbar,
+    rAF,
+    transform,
+    _elementStyle,
+    _prefixStyle,
+    _vendor;
   defaults = {
-
     /**
       a classname for the pane element.
       @property paneClass
       @type String
       @default 'nano-pane'
      */
-    paneClass: 'nano-pane',
+    paneClass: "nano-pane",
 
     /**
       a classname for the slider element.
@@ -20,7 +49,7 @@
       @type String
       @default 'nano-slider'
      */
-    sliderClass: 'nano-slider',
+    sliderClass: "nano-slider",
 
     /**
       a classname for the content element.
@@ -28,7 +57,7 @@
       @type String
       @default 'nano-content'
      */
-    contentClass: 'nano-content',
+    contentClass: "nano-content",
 
     /**
       a setting to enable native scrolling in iOS devices.
@@ -111,7 +140,7 @@
     @final
     @private
    */
-  SCROLLBAR = 'scrollbar';
+  SCROLLBAR = "scrollbar";
 
   /**
     @property SCROLL
@@ -120,7 +149,7 @@
     @final
     @private
    */
-  SCROLL = 'scroll';
+  SCROLL = "scroll";
 
   /**
     @property MOUSEDOWN
@@ -128,7 +157,7 @@
     @final
     @private
    */
-  MOUSEDOWN = 'mousedown';
+  MOUSEDOWN = "mousedown";
 
   /**
     @property MOUSEENTER
@@ -136,7 +165,7 @@
     @final
     @private
    */
-  MOUSEENTER = 'mouseenter';
+  MOUSEENTER = "mouseenter";
 
   /**
     @property MOUSEMOVE
@@ -145,7 +174,7 @@
     @final
     @private
    */
-  MOUSEMOVE = 'mousemove';
+  MOUSEMOVE = "mousemove";
 
   /**
     @property MOUSEWHEEL
@@ -153,7 +182,7 @@
     @final
     @private
    */
-  MOUSEWHEEL = 'mousewheel';
+  MOUSEWHEEL = "mousewheel";
 
   /**
     @property MOUSEUP
@@ -162,7 +191,7 @@
     @final
     @private
    */
-  MOUSEUP = 'mouseup';
+  MOUSEUP = "mouseup";
 
   /**
     @property RESIZE
@@ -170,7 +199,7 @@
     @final
     @private
    */
-  RESIZE = 'resize';
+  RESIZE = "resize";
 
   /**
     @property DRAG
@@ -179,7 +208,7 @@
     @final
     @private
    */
-  DRAG = 'drag';
+  DRAG = "drag";
 
   /**
     @property ENTER
@@ -188,7 +217,7 @@
     @final
     @private
    */
-  ENTER = 'enter';
+  ENTER = "enter";
 
   /**
     @property UP
@@ -197,7 +226,7 @@
     @final
     @private
    */
-  UP = 'up';
+  UP = "up";
 
   /**
     @property PANEDOWN
@@ -206,7 +235,7 @@
     @final
     @private
    */
-  PANEDOWN = 'panedown';
+  PANEDOWN = "panedown";
 
   /**
     @property DOMSCROLL
@@ -215,7 +244,7 @@
     @final
     @private
    */
-  DOMSCROLL = 'DOMMouseScroll';
+  DOMSCROLL = "DOMMouseScroll";
 
   /**
     @property DOWN
@@ -224,7 +253,7 @@
     @final
     @private
    */
-  DOWN = 'down';
+  DOWN = "down";
 
   /**
     @property WHEEL
@@ -233,7 +262,7 @@
     @final
     @private
    */
-  WHEEL = 'wheel';
+  WHEEL = "wheel";
 
   /**
     @property KEYDOWN
@@ -242,7 +271,7 @@
     @final
     @private
    */
-  KEYDOWN = 'keydown';
+  KEYDOWN = "keydown";
 
   /**
     @property KEYUP
@@ -251,7 +280,7 @@
     @final
     @private
    */
-  KEYUP = 'keyup';
+  KEYUP = "keyup";
 
   /**
     @property TOUCHMOVE
@@ -260,7 +289,7 @@
     @final
     @private
    */
-  TOUCHMOVE = 'touchmove';
+  TOUCHMOVE = "touchmove";
 
   /**
     @property BROWSER_IS_IE7
@@ -269,7 +298,10 @@
     @final
     @private
    */
-  BROWSER_IS_IE7 = window.navigator.appName === 'Microsoft Internet Explorer' && /msie 7./i.test(window.navigator.appVersion) && window.ActiveXObject;
+  BROWSER_IS_IE7 =
+    window.navigator.appName === "Microsoft Internet Explorer" &&
+    /msie 7./i.test(window.navigator.appVersion) &&
+    window.ActiveXObject;
 
   /**
     @property BROWSER_SCROLLBAR_WIDTH
@@ -281,13 +313,13 @@
   BROWSER_SCROLLBAR_WIDTH = null;
   rAF = window.requestAnimationFrame;
   cAF = window.cancelAnimationFrame;
-  _elementStyle = document.createElement('div').style;
+  _elementStyle = document.createElement("div").style;
   _vendor = (function() {
     var i, transform, vendor, vendors, _i, _len;
-    vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'];
+    vendors = ["t", "webkitT", "MozT", "msT", "OT"];
     for (i = _i = 0, _len = vendors.length; _i < _len; i = ++_i) {
       vendor = vendors[i];
-      transform = vendors[i] + 'ransform';
+      transform = vendors[i] + "ransform";
       if (transform in _elementStyle) {
         return vendors[i].substr(0, vendors[i].length - 1);
       }
@@ -298,12 +330,12 @@
     if (_vendor === false) {
       return false;
     }
-    if (_vendor === '') {
+    if (_vendor === "") {
       return style;
     }
     return _vendor + style.charAt(0).toUpperCase() + style.substr(1);
   };
-  transform = _prefixStyle('transform');
+  transform = _prefixStyle("transform");
   hasTransform = transform !== false;
 
   /**
@@ -315,13 +347,13 @@
    */
   getBrowserScrollbarWidth = function() {
     var outer, outerStyle, scrollbarWidth;
-    outer = document.createElement('div');
+    outer = document.createElement("div");
     outerStyle = outer.style;
-    outerStyle.position = 'absolute';
-    outerStyle.width = '100px';
-    outerStyle.height = '100px';
+    outerStyle.position = "absolute";
+    outerStyle.width = "100px";
+    outerStyle.height = "100px";
     outerStyle.overflow = SCROLL;
-    outerStyle.top = '-9999px';
+    outerStyle.top = "-9999px";
     document.body.appendChild(outer);
     scrollbarWidth = outer.offsetWidth - outer.clientWidth;
     document.body.removeChild(outer);
@@ -336,7 +368,7 @@
     }
     version = /Firefox\/\d{2}\./.exec(ua);
     if (version) {
-      version = version[0].replace(/\D+/g, '');
+      version = version[0].replace(/\D+/g, "");
     }
     return isOSXFF && +version > 23;
   };
@@ -351,16 +383,20 @@
     function NanoScroll(el, options) {
       this.el = el;
       this.options = options;
-      BROWSER_SCROLLBAR_WIDTH || (BROWSER_SCROLLBAR_WIDTH = getBrowserScrollbarWidth());
+      BROWSER_SCROLLBAR_WIDTH ||
+        (BROWSER_SCROLLBAR_WIDTH = getBrowserScrollbarWidth());
       this.$el = $(this.el);
       this.doc = $(this.options.documentContext || document);
       this.win = $(this.options.windowContext || window);
-      this.body = this.doc.find('body');
+      this.body = this.doc.find("body");
       this.$content = this.$el.children("." + options.contentClass);
-      this.$content.attr('tabindex', this.options.tabIndex || 0);
+      this.$content.attr("tabindex", this.options.tabIndex || 0);
       this.content = this.$content[0];
       this.previousPosition = 0;
-      if (this.options.iOSNativeScrolling && (this.el.style.WebkitOverflowScrolling != null)) {
+      if (
+        this.options.iOSNativeScrolling &&
+        this.el.style.WebkitOverflowScrolling != null
+      ) {
         this.nativeScrolling();
       } else {
         this.generate();
@@ -369,7 +405,6 @@
       this.addEvents();
       this.reset();
     }
-
 
     /**
       Prevents the rest of the page being scrolled
@@ -385,19 +420,24 @@
         return;
       }
       if (e.type === DOMSCROLL) {
-        if (direction === DOWN && e.originalEvent.detail > 0 || direction === UP && e.originalEvent.detail < 0) {
+        if (
+          (direction === DOWN && e.originalEvent.detail > 0) ||
+          (direction === UP && e.originalEvent.detail < 0)
+        ) {
           e.preventDefault();
         }
       } else if (e.type === MOUSEWHEEL) {
         if (!e.originalEvent || !e.originalEvent.wheelDelta) {
           return;
         }
-        if (direction === DOWN && e.originalEvent.wheelDelta < 0 || direction === UP && e.originalEvent.wheelDelta > 0) {
+        if (
+          (direction === DOWN && e.originalEvent.wheelDelta < 0) ||
+          (direction === UP && e.originalEvent.wheelDelta > 0)
+        ) {
           e.preventDefault();
         }
       }
     };
-
 
     /**
       Enable iOS native scrolling
@@ -407,12 +447,11 @@
 
     NanoScroll.prototype.nativeScrolling = function() {
       this.$content.css({
-        WebkitOverflowScrolling: 'touch'
+        WebkitOverflowScrolling: "touch"
       });
       this.iOSNativeScrolling = true;
       this.isActive = true;
     };
-
 
     /**
       Updates those nanoScroller properties that
@@ -427,10 +466,15 @@
       this.maxScrollTop = content.scrollHeight - content.clientHeight;
       this.prevScrollTop = this.contentScrollTop || 0;
       this.contentScrollTop = content.scrollTop;
-      direction = this.contentScrollTop > this.previousPosition ? "down" : this.contentScrollTop < this.previousPosition ? "up" : "same";
+      direction =
+        this.contentScrollTop > this.previousPosition
+          ? "down"
+          : this.contentScrollTop < this.previousPosition
+            ? "up"
+            : "same";
       this.previousPosition = this.contentScrollTop;
       if (direction !== "same") {
-        this.$el.trigger('update', {
+        this.$el.trigger("update", {
           position: this.contentScrollTop,
           maximum: this.maxScrollTop,
           direction: direction
@@ -438,10 +482,12 @@
       }
       if (!this.iOSNativeScrolling) {
         this.maxSliderTop = this.paneHeight - this.sliderHeight;
-        this.sliderTop = this.maxScrollTop === 0 ? 0 : this.contentScrollTop * this.maxSliderTop / this.maxScrollTop;
+        this.sliderTop =
+          this.maxScrollTop === 0
+            ? 0
+            : (this.contentScrollTop * this.maxSliderTop) / this.maxScrollTop;
       }
     };
-
 
     /**
       Updates CSS styles for current scroll position.
@@ -464,17 +510,18 @@
         if (cAF && this.scrollRAF) {
           cAF(this.scrollRAF);
         }
-        this.scrollRAF = rAF((function(_this) {
-          return function() {
-            _this.scrollRAF = null;
-            return _this.slider.css(cssValue);
-          };
-        })(this));
+        this.scrollRAF = rAF(
+          (function(_this) {
+            return function() {
+              _this.scrollRAF = null;
+              return _this.slider.css(cssValue);
+            };
+          })(this)
+        );
       } else {
         this.slider.css(cssValue);
       }
     };
-
 
     /**
       Creates event related methods
@@ -491,20 +538,32 @@
             if (!_this.slider.is(e.target)) {
               _this.offsetY = 0;
             }
-            _this.pane.addClass('active');
-            _this.doc.bind(MOUSEMOVE, _this.events[DRAG]).bind(MOUSEUP, _this.events[UP]);
+            _this.pane.addClass("active");
+            _this.doc
+              .bind(MOUSEMOVE, _this.events[DRAG])
+              .bind(MOUSEUP, _this.events[UP]);
             _this.body.bind(MOUSEENTER, _this.events[ENTER]);
             return false;
           };
         })(this),
         drag: (function(_this) {
           return function(e) {
-            _this.sliderY = e.pageY - _this.$el.offset().top - _this.paneTop - (_this.offsetY || _this.sliderHeight * 0.5);
+            _this.sliderY =
+              e.pageY -
+              _this.$el.offset().top -
+              _this.paneTop -
+              (_this.offsetY || _this.sliderHeight * 0.5);
             _this.scroll();
-            if (_this.contentScrollTop >= _this.maxScrollTop && _this.prevScrollTop !== _this.maxScrollTop) {
-              _this.$el.trigger('scrollend');
-            } else if (_this.contentScrollTop === 0 && _this.prevScrollTop !== 0) {
-              _this.$el.trigger('scrolltop');
+            if (
+              _this.contentScrollTop >= _this.maxScrollTop &&
+              _this.prevScrollTop !== _this.maxScrollTop
+            ) {
+              _this.$el.trigger("scrollend");
+            } else if (
+              _this.contentScrollTop === 0 &&
+              _this.prevScrollTop !== 0
+            ) {
+              _this.$el.trigger("scrolltop");
             }
             return false;
           };
@@ -512,8 +571,10 @@
         up: (function(_this) {
           return function(e) {
             _this.isBeingDragged = false;
-            _this.pane.removeClass('active');
-            _this.doc.unbind(MOUSEMOVE, _this.events[DRAG]).unbind(MOUSEUP, _this.events[UP]);
+            _this.pane.removeClass("active");
+            _this.doc
+              .unbind(MOUSEMOVE, _this.events[DRAG])
+              .unbind(MOUSEUP, _this.events[UP]);
             _this.body.unbind(MOUSEENTER, _this.events[ENTER]);
             return false;
           };
@@ -525,7 +586,8 @@
         })(this),
         panedown: (function(_this) {
           return function(e) {
-            _this.sliderY = (e.offsetY || e.originalEvent.layerY) - (_this.sliderHeight * 0.5);
+            _this.sliderY =
+              (e.offsetY || e.originalEvent.layerY) - _this.sliderHeight * 0.5;
             _this.scroll();
             _this.events.down(e);
             return false;
@@ -549,14 +611,14 @@
                 _this.preventScrolling(e, DOWN);
               }
               if (_this.prevScrollTop !== _this.maxScrollTop) {
-                _this.$el.trigger('scrollend');
+                _this.$el.trigger("scrollend");
               }
             } else if (_this.contentScrollTop === 0) {
               if (_this.options.preventPageScrolling) {
                 _this.preventScrolling(e, UP);
               }
               if (_this.prevScrollTop !== 0) {
-                _this.$el.trigger('scrolltop');
+                _this.$el.trigger("scrolltop");
               }
             }
           };
@@ -567,7 +629,12 @@
             if (e == null) {
               return;
             }
-            delta = e.delta || e.wheelDelta || (e.originalEvent && e.originalEvent.wheelDelta) || -e.detail || (e.originalEvent && -e.originalEvent.detail);
+            delta =
+              e.delta ||
+              e.wheelDelta ||
+              (e.originalEvent && e.originalEvent.wheelDelta) ||
+              -e.detail ||
+              (e.originalEvent && -e.originalEvent.detail);
             if (delta) {
               _this.sliderY += -delta / 3;
             }
@@ -589,7 +656,6 @@
       };
     };
 
-
     /**
       Adds event listeners with jQuery.
       @method addEvents
@@ -605,11 +671,15 @@
       }
       if (!this.iOSNativeScrolling) {
         this.slider.bind(MOUSEDOWN, events[DOWN]);
-        this.pane.bind(MOUSEDOWN, events[PANEDOWN]).bind("" + MOUSEWHEEL + " " + DOMSCROLL, events[WHEEL]);
+        this.pane
+          .bind(MOUSEDOWN, events[PANEDOWN])
+          .bind("" + MOUSEWHEEL + " " + DOMSCROLL, events[WHEEL]);
       }
-      this.$content.bind("" + SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, events[SCROLL]);
+      this.$content.bind(
+        "" + SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE,
+        events[SCROLL]
+      );
     };
-
 
     /**
       Removes event listeners with jQuery.
@@ -625,9 +695,11 @@
         this.slider.unbind();
         this.pane.unbind();
       }
-      this.$content.unbind("" + SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, events[SCROLL]);
+      this.$content.unbind(
+        "" + SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE,
+        events[SCROLL]
+      );
     };
-
 
     /**
       Generates nanoScroller's scrollbar and elements for it.
@@ -637,16 +709,36 @@
      */
 
     NanoScroll.prototype.generate = function() {
-      var contentClass, cssRule, currentPadding, options, pane, paneClass, sliderClass;
+      var contentClass,
+        cssRule,
+        currentPadding,
+        options,
+        pane,
+        paneClass,
+        sliderClass;
       options = this.options;
-      paneClass = options.paneClass, sliderClass = options.sliderClass, contentClass = options.contentClass;
-      if (!(pane = this.$el.children("." + paneClass)).length && !pane.children("." + sliderClass).length) {
-        this.$el.append("<div class=\"" + paneClass + "\"><div class=\"" + sliderClass + "\" /></div>");
+      (paneClass = options.paneClass),
+        (sliderClass = options.sliderClass),
+        (contentClass = options.contentClass);
+      if (
+        !(pane = this.$el.children("." + paneClass)).length &&
+        !pane.children("." + sliderClass).length
+      ) {
+        this.$el.append(
+          '<div class="' +
+            paneClass +
+            '"><div class="' +
+            sliderClass +
+            '" /></div>'
+        );
       }
       this.pane = this.$el.children("." + paneClass);
       this.slider = this.pane.find("." + sliderClass);
       if (BROWSER_SCROLLBAR_WIDTH === 0 && isFFWithBuggyScrollbar()) {
-        currentPadding = window.getComputedStyle(this.content, null).getPropertyValue('padding-right').replace(/[^0-9.]+/g, '');
+        currentPadding = window
+          .getComputedStyle(this.content, null)
+          .getPropertyValue("padding-right")
+          .replace(/[^0-9.]+/g, "");
         cssRule = {
           right: -14,
           paddingRight: +currentPadding + 14
@@ -655,14 +747,13 @@
         cssRule = {
           right: -BROWSER_SCROLLBAR_WIDTH
         };
-        this.$el.addClass('has-scrollbar');
+        this.$el.addClass("has-scrollbar");
       }
       if (cssRule != null) {
         this.$content.css(cssRule);
       }
       return this;
     };
-
 
     /**
       @method restore
@@ -672,11 +763,10 @@
     NanoScroll.prototype.restore = function() {
       this.stopped = false;
       if (!this.iOSNativeScrolling) {
-        this.pane.removeClass('disabled').addClass('enabled');
+        this.pane.removeClass("disabled").addClass("enabled");
       }
       this.addEvents();
     };
-
 
     /**
       Resets nanoScroller's scrollbar.
@@ -687,7 +777,18 @@
      */
 
     NanoScroll.prototype.reset = function() {
-      var content, contentHeight, contentPosition, contentStyle, contentStyleOverflowY, paneBottom, paneHeight, paneOuterHeight, paneTop, parentMaxHeight, right, sliderHeight;
+      var content,
+        contentHeight,
+        contentPosition,
+        contentStyle,
+        contentStyleOverflowY,
+        paneBottom,
+        paneHeight,
+        paneOuterHeight,
+        paneTop,
+        parentMaxHeight,
+        right,
+        sliderHeight;
       if (this.iOSNativeScrolling) {
         this.contentHeight = this.content.scrollHeight;
         return;
@@ -710,19 +811,31 @@
       parentMaxHeight = parseInt(this.$el.css("max-height"), 10);
       if (parentMaxHeight > 0) {
         this.$el.height("");
-        this.$el.height(content.scrollHeight > parentMaxHeight ? parentMaxHeight : content.scrollHeight);
+        this.$el.height(
+          content.scrollHeight > parentMaxHeight
+            ? parentMaxHeight
+            : content.scrollHeight
+        );
       }
       paneHeight = this.pane.outerHeight(false);
-      paneTop = parseInt(this.pane.css('top'), 10);
-      paneBottom = parseInt(this.pane.css('bottom'), 10);
+      paneTop = parseInt(this.pane.css("top"), 10);
+      paneBottom = parseInt(this.pane.css("bottom"), 10);
       paneOuterHeight = paneHeight + paneTop + paneBottom;
-      sliderHeight = Math.round(paneOuterHeight / contentHeight * paneOuterHeight);
+      sliderHeight = Math.round(
+        (paneOuterHeight / contentHeight) * paneOuterHeight
+      );
       if (sliderHeight < this.options.sliderMinHeight) {
         sliderHeight = this.options.sliderMinHeight;
-      } else if ((this.options.sliderMaxHeight != null) && sliderHeight > this.options.sliderMaxHeight) {
+      } else if (
+        this.options.sliderMaxHeight != null &&
+        sliderHeight > this.options.sliderMaxHeight
+      ) {
         sliderHeight = this.options.sliderMaxHeight;
       }
-      if (contentStyleOverflowY === SCROLL && contentStyle.overflowX !== SCROLL) {
+      if (
+        contentStyleOverflowY === SCROLL &&
+        contentStyle.overflowX !== SCROLL
+      ) {
         sliderHeight += BROWSER_SCROLLBAR_WIDTH;
       }
       this.maxSliderTop = paneOuterHeight - sliderHeight;
@@ -733,33 +846,39 @@
       this.paneTop = paneTop;
       this.slider.height(sliderHeight - 2 * this.options.sliderPadding);
       this.events.scroll();
-      this.pane.removeClass('disabled').addClass('enabled');
+      this.pane.removeClass("disabled").addClass("enabled");
       this.isActive = true;
-      if ((content.scrollHeight === content.clientHeight) || (this.pane.outerHeight(true) >= content.scrollHeight && contentStyleOverflowY !== SCROLL)) {
-        this.pane.removeClass('enabled').addClass('disabled');
+      if (
+        content.scrollHeight === content.clientHeight ||
+        (this.pane.outerHeight(true) >= content.scrollHeight &&
+          contentStyleOverflowY !== SCROLL)
+      ) {
+        this.pane.removeClass("enabled").addClass("disabled");
         this.isActive = false;
-      } else if (this.el.clientHeight === content.scrollHeight && contentStyleOverflowY === SCROLL) {
+      } else if (
+        this.el.clientHeight === content.scrollHeight &&
+        contentStyleOverflowY === SCROLL
+      ) {
         this.slider.hide();
       } else {
         this.slider.show();
       }
       this.pane.css({
-        opacity: (this.options.alwaysVisible ? 1 : ''),
-        visibility: (this.options.alwaysVisible ? 'visible' : '')
+        opacity: this.options.alwaysVisible ? 1 : "",
+        visibility: this.options.alwaysVisible ? "visible" : ""
       });
-      contentPosition = this.$content.css('position');
-      if (contentPosition === 'static' || contentPosition === 'relative') {
-        right = parseInt(this.$content.css('right'), 10);
+      contentPosition = this.$content.css("position");
+      if (contentPosition === "static" || contentPosition === "relative") {
+        right = parseInt(this.$content.css("right"), 10);
         if (right) {
           this.$content.css({
-            right: '',
+            right: "",
             marginRight: right
           });
         }
       }
       return this;
     };
-
 
     /**
       @method scroll
@@ -774,14 +893,15 @@
       }
       this.sliderY = Math.max(0, this.sliderY);
       this.sliderY = Math.min(this.maxSliderTop, this.sliderY);
-      this.$content.scrollTop(this.maxScrollTop * this.sliderY / this.maxSliderTop);
+      this.$content.scrollTop(
+        (this.maxScrollTop * this.sliderY) / this.maxSliderTop
+      );
       if (!this.iOSNativeScrolling) {
         this.updateScrollValues();
         this.setOnScrollStyles();
       }
       return this;
     };
-
 
     /**
       Scroll at the bottom with an offset value
@@ -796,11 +916,12 @@
       if (!this.isActive) {
         return;
       }
-      this.$content.scrollTop(this.contentHeight - this.$content.height() - offsetY).trigger(MOUSEWHEEL);
+      this.$content
+        .scrollTop(this.contentHeight - this.$content.height() - offsetY)
+        .trigger(MOUSEWHEEL);
       this.stop().restore();
       return this;
     };
-
 
     /**
       Scroll at the top with an offset value
@@ -815,13 +936,18 @@
       if (!this.isActive) {
         return;
       }
-      this.$content.stop(true, false).animate({
-        scrollTop: +options[0]
-      }, options[1]).trigger(MOUSEWHEEL);
+      this.$content
+        .stop(true, false)
+        .animate(
+          {
+            scrollTop: +options[0]
+          },
+          options[1]
+        )
+        .trigger(MOUSEWHEEL);
       this.stop().restore();
       return this;
     };
-
 
     /**
       Scroll to an element
@@ -846,7 +972,6 @@
       return this;
     };
 
-
     /**
       To stop the operation.
       This option will tell the plugin to disable all event bindings and hide the gadget scrollbar from the UI.
@@ -864,11 +989,10 @@
       this.stopped = true;
       this.removeEvents();
       if (!this.iOSNativeScrolling) {
-        this.pane.removeClass('enabled').addClass('disabled');
+        this.pane.removeClass("enabled").addClass("disabled");
       }
       return this;
     };
-
 
     /**
       Destroys nanoScroller and restores browser's native scrollbar.
@@ -886,18 +1010,17 @@
         this.pane.remove();
       }
       if (BROWSER_IS_IE7) {
-        this.$content.height('');
+        this.$content.height("");
       }
-      this.$content.removeAttr('tabindex');
-      if (this.$el.hasClass('has-scrollbar')) {
-        this.$el.removeClass('has-scrollbar');
+      this.$content.removeAttr("tabindex");
+      if (this.$el.hasClass("has-scrollbar")) {
+        this.$el.removeClass("has-scrollbar");
         this.$content.css({
-          right: ''
+          right: ""
         });
       }
       return this;
     };
-
 
     /**
       To flash the scrollbar gadget for an amount of time defined in plugin settings (defaults to 1,5s).
@@ -916,17 +1039,19 @@
         return;
       }
       this.reset();
-      this.pane.addClass('flashed');
-      setTimeout((function(_this) {
-        return function() {
-          _this.pane.removeClass('flashed');
-        };
-      })(this), this.options.flashDelay);
+      this.pane.addClass("flashed");
+      setTimeout(
+        (function(_this) {
+          return function() {
+            _this.pane.removeClass("flashed");
+          };
+        })(this),
+        this.options.flashDelay
+      );
       return this;
     };
 
     return NanoScroll;
-
   })();
   $.fn.nanoScroller = function(settings) {
     return this.each(function() {
@@ -946,10 +1071,10 @@
         if (settings.scrollTo) {
           return scrollbar.scrollTo(settings.scrollTo);
         }
-        if (settings.scroll === 'bottom') {
+        if (settings.scroll === "bottom") {
           return scrollbar.scrollBottom(0);
         }
-        if (settings.scroll === 'top') {
+        if (settings.scroll === "top") {
           return scrollbar.scrollTop(0);
         }
         if (settings.scroll && settings.scroll instanceof $) {
